@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from flask import Flask, current_app
@@ -35,12 +36,26 @@ def create_app(config_name):
     slack_manager.init_app(app, blueprint=api_blueprint)
 
     @event_received.connect_via(app)
-    def slack_client(sender, event, **extra):
-        sender.slack_client = SlackClient(sender.config['SLACK_API_TOKEN'])
+    def slack_client(sender, data, **extra):
+        slack_api_token = sender.config['SLACK_API_TOKEN']
+        sender.api_call = SlackClient(slack_api_token).api_call
+
     @slack_manager.context_processor
     def context_processor(data):
         return current_app.config['SLACK_EVENT_CONTEXT']
 
+    @slack_manager.dispatch_event_handler
+    def async_event_dispatcher(sender, data, handlers, **extra):
+        coroutines = [h(sender, data, **extra) for h in handlers]
+
+        # Python 3.6
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(asyncio.wait(coroutines))
+        loop.close()
+
+        # Python 3.7 (zappa does not support it)
+        # asyncio.run(asyncio.wait(coroutines))
 
     if app.config['SSL_REDIRECT']:
         SSLify(app)

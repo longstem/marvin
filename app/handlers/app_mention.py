@@ -4,13 +4,15 @@ from .. import slack_manager
 
 
 @slack_manager.on('app_mention')
-def reply_message_about_life(sender, event):
+async def reply_message_about_life(sender, data, **extra):
+    event = data['event']
+
     if re.search(r'\blife\b', event['text'], re.I):
         text = 'Life, don\'t talk to me about life'
     else:
-        text = ':robot_face:'
+        text = f":robot_face: knock, knock, knock, <@{event['user']}>"
 
-    sender.slack_client.api_call(
+    sender.api_call(
         'chat.postMessage',
         channel=event['channel'],
         thread_ts=event['ts'],
