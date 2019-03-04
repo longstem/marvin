@@ -4,7 +4,7 @@
 
 ## No seriously, what is Marvin?
 
-Marvin is a **Slack Bot layout** for *Flask* to develop *Slack* event handlers and deploy on *AWS Lambda* + *API Gateway*.
+Marvin is a **Slack Bot layout** for *Flask* to develop [*Slack* Event](https://api.slack.com/events) handlers and deploy on *AWS Lambda* + *API Gateway*.
 
 ## Quickstart
 
