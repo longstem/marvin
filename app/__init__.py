@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, current_app
 
 import flask_login
 import flask_slack
@@ -37,6 +37,10 @@ def create_app(config_name):
     @event_received.connect_via(app)
     def slack_client(sender, event, **extra):
         sender.slack_client = SlackClient(sender.config['SLACK_API_TOKEN'])
+    @slack_manager.context_processor
+    def context_processor(data):
+        return current_app.config['SLACK_EVENT_CONTEXT']
+
 
     if app.config['SSL_REDIRECT']:
         SSLify(app)

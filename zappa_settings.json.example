@@ -8,7 +8,8 @@
         "s3_bucket": "marvin-lambda",
         "remote_env": "s3://marvin-lambda/config.json",
         "environment_variables": {
-            "FLASK_CONFIG": "production"
+            "FLASK_CONFIG": "production",
+            "SLACK_BOT_ID": "your-slack-bot-id"
         }
     }
 }

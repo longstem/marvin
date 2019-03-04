@@ -16,6 +16,10 @@ class Config:
     SLACK_API_TOKEN = os.environ.get('SLACK_API_TOKEN')
     SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
 
+    SLACK_EVENT_CONTEXT = {
+        'bot_id': os.environ.get('SLACK_BOT_ID'),
+    }
+
     @staticmethod
     def init_app(app):
         """Init app"""
