@@ -12,11 +12,11 @@
 *.xls
 
 /.coverage
+/.defocus
 /.env
 /.pytest_cache
 
+/app/marvin
 /config.json
 /coverage.xml
-/examples
-/static
 /zappa_settings.json
