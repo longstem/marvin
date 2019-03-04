@@ -10,7 +10,8 @@ class Config:
 
     DEFAULT_SUBDOMAIN = os.environ.get('DEFAULT_SUBDOMAIN')
     API_URL_PREFIX = os.environ.get('API_URL_PREFIX', '/api')
-    API_SUBDOMAIN = os.environ.get('API_SUBDOMAIN')
+
+    API_SUBDOMAIN = os.environ.get('API_SUBDOMAIN', DEFAULT_SUBDOMAIN)
 
     SLACK_API_TOKEN = os.environ.get('SLACK_API_TOKEN')
     SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
