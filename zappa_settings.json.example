@@ -1,0 +1,14 @@
+{
+    "production": {
+        "aws_region": "us-west-1",
+        "runtime": "python3.6",
+        "app_function": "marvin.app",
+        "profile_name": "marvin",
+        "project_name": "marvin",
+        "s3_bucket": "marvin-lambda",
+        "remote_env": "s3://marvin-lambda/config.json",
+        "environment_variables": {
+            "FLASK_CONFIG": "production"
+        }
+    }
+}

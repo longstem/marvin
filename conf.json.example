@@ -1,0 +1,6 @@
+{
+    "SECRET_KEY": "<required>",
+    "SENTRY_DSN": "<up to you>",
+    "SLACK_SIGNING_SECRET": "<required>",
+    "SLACK_API_TOKEN": "<required>"
+}
