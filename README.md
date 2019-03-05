@@ -51,7 +51,7 @@ $ make botinfo
 }
 ```
 
-Copy the `id` value for `SLACK_BOT_ID` and the `bot_id` value for `SLACK_BOT_USER_ID` from your `.env` file and reload the Docker container.
+Copy the `id` value for `SLACK_BOT_USER_ID` and the `bot_id` value for `SLACK_BOT_ID` from your `.env` file and reload the Docker container.
 
 ```sh
 $ make reload
