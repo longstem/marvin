@@ -4,7 +4,7 @@ from .. import slack_manager
 
 
 @slack_manager.on('app_mention')
-async def reply_message_about_life(sender, data, **extra):
+async def reply_message(sender, data, **extra):
     event = data['event']
 
     if re.search(r'\blife\b', event['text'], re.I):

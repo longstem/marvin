@@ -1,8 +1,10 @@
 from .. import slack_manager
+from .decorators import is_not_me
 
 
 @slack_manager.on('reaction_added')
-async def sometimes_same_reaction(sender, data, **extra):
+@is_not_me
+async def same_reaction(sender, data, **extra):
     event = data['event']
     item = event['item']
 
