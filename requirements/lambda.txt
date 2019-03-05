@@ -1,4 +1,7 @@
 -r production.txt
 
 aws-xray-sdk==2.4.1
-zappa==0.47.1
+future==0.16.0
+
+# Python 3.7 Support: https://github.com/Miserlou/Zappa/pull/1762
+-e git+https://github.com/purificant/Zappa.git@py37#egg=zappa

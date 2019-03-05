@@ -1,7 +1,7 @@
 {
     "production": {
         "aws_region": "us-west-1",
-        "runtime": "python3.6",
+        "runtime": "python3.7",
         "app_function": "marvin.app",
         "profile_name": "marvin",
         "project_name": "marvin",
