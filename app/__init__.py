@@ -48,15 +48,7 @@ def create_app(config_name):
     @slack_manager.dispatch_event_handler
     def async_event_dispatcher(sender, data, handlers, **extra):
         coroutines = [h(sender, data, **extra) for h in handlers]
-
-        # Python 3.6
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(asyncio.wait(coroutines))
-        loop.close()
-
-        # Python 3.7 (zappa does not support it)
-        # asyncio.run(asyncio.wait(coroutines))
+        asyncio.run(asyncio.wait(coroutines))
 
     if app.config['SSL_REDIRECT']:
         SSLify(app)
