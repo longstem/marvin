@@ -2,6 +2,8 @@ import logging
 import os
 from logging import StreamHandler
 
+from pythonjsonlogger import jsonlogger
+
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', '-')
@@ -18,6 +20,7 @@ class Config:
 
     SLACK_EVENT_CONTEXT = {
         'bot_id': os.environ.get('SLACK_BOT_ID'),
+        'bot_user_id': os.environ.get('SLACK_BOT_USER_ID'),
     }
 
     @staticmethod
@@ -28,8 +31,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
 
+    @staticmethod
+    def init_app(app):
+        log_handler = StreamHandler()
+        formatter = jsonlogger.JsonFormatter(json_indent=4)
+        log_handler.setLevel(logging.DEBUG)
+        log_handler.setFormatter(formatter)
 
-class TestConfig(Config):
+        app.logger.handlers[:] = []
+        app.logger.addHandler(log_handler)
+
+
+class TestConfig(DevelopmentConfig):
     TESTING = True
 
 
@@ -44,21 +57,9 @@ class ProductionConfig(Config):
         sentry.init_app(app)
 
 
-class DockerConfig(DevelopmentConfig):
-
-    @classmethod
-    def init_app(cls, app):
-        ProductionConfig.init_app(app)
-
-        file_handler = StreamHandler()
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
-
-
 config = {
     'development': DevelopmentConfig,
     'test': TestConfig,
     'production': ProductionConfig,
-    'docker': DockerConfig,
     'default': DevelopmentConfig,
 }
