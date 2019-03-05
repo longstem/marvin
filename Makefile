@@ -21,10 +21,8 @@ port ?= 8000
 run_port ?= 8001
 ngrok_port ?= $(run_port)
 
-docker_exec := docker exec -it $(docker_container)
-
 ifeq (,$(wildcard /.dockerenv))
-	exec := $(docker_exec)
+	exec := docker exec -it $(docker_container)
 endif
 
 
@@ -77,7 +75,7 @@ logs:
 	@docker logs -f $(docker_container)
 
 sh:
-	@$(docker_exec) /bin/bash
+	@$(exec) /bin/bash
 
 ngrok:
 	@ngrok http $(ngrok_port)
