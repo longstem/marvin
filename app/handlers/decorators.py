@@ -14,6 +14,6 @@ def on_channel_types(*types):
 def is_not_me(f):
     @wraps(f)
     async def decorated_handler(sender, data, bot_id, **extra):
-        if data['event'].get('bot_id', '') != bot_id:
+        if data['event'].get('bot_id') != bot_id:
             await f(sender, data, bot_id=bot_id, **extra)
     return decorated_handler
