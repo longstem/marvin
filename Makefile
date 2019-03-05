@@ -34,10 +34,12 @@ help:
 	@echo "  up            Run docker container and build if the image does not exist"
 	@echo "  restart       Restart docker container"
 	@echo "  rm            Remove docker container"
+	@echo "  reload        Reload docker container"
 	@echo "  logs          View output from docker container"
 	@echo "  sh            Run bash shell on the container"
 	@echo "  ngrok         Create a tunnel to development server"
 	@echo "  run           Run a local development server"
+	@echo "  botinfo       Show the current Bot info"
 	@echo "  requirements  Install pip requirements from \$$REQUIREMENTS_FILES variable"
 	@echo "  lambda        Build λ docker container"
 	@echo "  zappa         Run zappa command (usage: make zappa cmd={command})"
@@ -69,6 +71,8 @@ restart:
 rm:
 	@docker rm -f $(docker_container)
 
+reload: rm up
+
 logs:
 	@docker logs -f $(docker_container)
 
@@ -80,6 +84,9 @@ ngrok:
 
 run:
 	@$(exec) bash -c 'DEFAULT_SUBDOMAIN=$(subdomain) flask run'
+
+botinfo:
+	@$(exec) bash -c 'flask botinfo'
 
 requirements:
 	@for requirement in $(subst $(,), ,$(REQUIREMENTS_FILES)); do \
@@ -114,4 +121,4 @@ coverage: test.requirements
 		--cov-report term \
 		--cov-report xml
 
-.PHONY: help build build.if up restart rm logs sh ngrok run requirements lambda zappa test.requirements test isort coverage
+.PHONY: help build build.if up restart rm reload logs sh ngrok run botinfo requirements lambda zappa test.requirements test isort coverage

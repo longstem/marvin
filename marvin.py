@@ -15,3 +15,10 @@ def profile():
 @app.cli.command()
 def deploy():
     """Run deployment tasks"""
+
+
+@app.cli.command()
+def botinfo():
+    auth = app.api_call('auth.test')
+    user_info = app.api_call('users.info', user=auth['user_id'])
+    app.logger.info(user_info['user'])
