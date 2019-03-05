@@ -28,13 +28,36 @@ Fill in your `.env` file with your `SLACK_SIGNING_SECRET` and `SLACK_API_TOKEN` 
 $ cp .env.example .env
 ```
 
-Build the local environment:
+🐣 Build the local environment:
 
 ```sh
 $ make up
 ```
 
-And Run your local server:
+To avoid cyclic calls between subscriptions and API calls, set the Slack variables that identify your Bot:
+
+```sh
+$ make botinfo
+```
+
+```
+{
+    "id": "AGOAULRCZ",
+    "name": "marvin",
+    "profile": {
+        "bot_id": CGK8R9V7S",
+    },
+    "is_bot": true
+}
+```
+
+Copy the `id` value for `SLACK_BOT_ID` and the `bot_id` value for `SLACK_BOT_USER_ID` from your `.env` file and reload the Docker container.
+
+```sh
+$ make reload
+```
+
+🚀 Run your local server:
 
 ```sh
 $ make run
@@ -47,7 +70,7 @@ Finally, you need a **Public URL** to subscribe to *Slack* events, you can use [
 $ make ngrok
 ```
 
-![ngrok](https://user-images.githubusercontent.com/5514990/53777178-0d40b980-3f2b-11e9-8150-9589916d41d6.png)
+![ngrok](https://user-images.githubusercontent.com/5514990/53827525-ec6d7800-3fad-11e9-92c1-a912b2241e1f.png)
 
 As you can see in the image, *ngrok* has assigned to the development server a subdomain `dd15a495`, so the Public URL is `https://dd15a495.ngrok.io/api/v1/slack/events`.
 
@@ -99,10 +122,12 @@ Please use 'make <target>' where <target> is one of
   up            Run docker container and build if the image does not exist
   restart       Restart docker container
   rm            Remove docker container
+  reload        Reload docker container
   logs          View output from docker container
   sh            Run bash shell on the container
   ngrok         Create a tunnel to development server
   run           Run a local development server
+  botinfo       Show the current Bot info
   requirements  Install pip requirements from $REQUIREMENTS_FILES variable
   lambda        Build λ docker container
   zappa         Run zappa command (usage: make zappa cmd={command})
