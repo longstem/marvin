@@ -38,6 +38,7 @@ Please use 'make <target>' where <target> is one of
   rm            Remove docker container
   logs          View output from docker container
   sh            Run bash shell on the container
+  ngrok         Create a tunnel to development server
   run           Run a local development server
   requirements  Install pip requirements from $REQUIREMENTS_FILES variable
   lambda        Build λ docker container

@@ -19,6 +19,7 @@ lambda_container := $(app_name).lambda
 address ?= 127.0.0.1
 port ?= 8000
 run_port ?= 8001
+ngrok_port ?= $(run_port)
 
 docker_exec := docker exec -it $(docker_container)
 
@@ -35,6 +36,7 @@ help:
 	@echo "  rm            Remove docker container"
 	@echo "  logs          View output from docker container"
 	@echo "  sh            Run bash shell on the container"
+	@echo "  ngrok         Create a tunnel to development server"
 	@echo "  run           Run a local development server"
 	@echo "  requirements  Install pip requirements from \$$REQUIREMENTS_FILES variable"
 	@echo "  lambda        Build λ docker container"
@@ -42,7 +44,6 @@ help:
 	@echo "  test          Run unit tests"
 	@echo "  isort         Run isort recursively from your current directory"
 	@echo "  coverage      Run unit tests and check the coverage"
-
 
 build:
 	@docker build -t $(docker_image) .
@@ -57,7 +58,6 @@ up: build.if
 		--name $(docker_container) \
 		--env-file ./.env \
 		--env-file ./.flaskenv \
-		-e SERVER_NAME=$(DOMAIN_NAME):$(port) \
 		-v $(PWD):/marvin \
 		-p $(address):$(port):5000 \
 		-p $(address):$(run_port):$(FLASK_RUN_PORT) \
@@ -75,8 +75,11 @@ logs:
 sh:
 	@$(docker_exec) /bin/bash
 
+ngrok:
+	@ngrok http $(ngrok_port)
+
 run:
-	@$(exec) bash -c 'SERVER_NAME=$(DOMAIN_NAME):$(run_port) flask run'
+	@$(exec) bash -c 'DEFAULT_SUBDOMAIN=$(subdomain) flask run'
 
 requirements:
 	@for requirement in $(subst $(,), ,$(REQUIREMENTS_FILES)); do \
@@ -111,4 +114,4 @@ coverage: test.requirements
 		--cov-report term \
 		--cov-report xml
 
-.PHONY: help build build.if up restart rm logs sh run requirements lambda zappa test.requirements test isort coverage
+.PHONY: help build build.if up restart rm logs sh ngrok run requirements lambda zappa test.requirements test isort coverage
